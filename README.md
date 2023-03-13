@@ -1,2 +1,2 @@
-# ptu8-final-project
-PTU8 Baigiamasis praktinis darbas
+# Nuoseklių sakinių klasifikavimas atsitiktinių imčių medicininių tyrimų santraukose
+### Sequential Sentence Classification in Medical Abstracts of Randomized Controlled Trials
