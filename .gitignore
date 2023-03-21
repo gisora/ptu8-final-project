@@ -131,3 +131,4 @@ dmypy.json
 #Projekto aplankai ir kiti failai
 pubmed-rct/
 tensorboard/
+checkpoints/
