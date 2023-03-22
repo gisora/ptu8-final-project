@@ -1,6 +1,5 @@
 import tensorflow as tf
-from nsk.models import get_model
-from nsk.data import format_input_data, format_output_data
+from nsk.models import get_model, get_result
 from fastapi import FastAPI, Request, Body
 # from fastapi.staticfiles import StaticFiles
 
@@ -26,8 +25,6 @@ async def get_index(request: Request):
 @app.post("/api/predict")
 async def get_predictions(request: Request, body=Body(...)):
     abstract = body['abstract']
-    inputs = format_input_data(abstract)
-    pred_probs = MODEL.predict(x=inputs)
-    outputs = format_output_data(abstract, pred_probs)
+    outputs = get_result(abstract, MODEL)
 
     return outputs
