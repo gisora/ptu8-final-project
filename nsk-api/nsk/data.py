@@ -80,7 +80,7 @@ def get_classname(classname_idx: int):
     return classnames[classname_idx]
 
 
-def format_output_data(abstract: str, pred_probabilities):
+def format_output_data(abstract: str, pred_probabilities, group):
     """
     Grąžina python žodynų su santraukos sakiniu ir modelio priskirta etikete sąrašą
 
@@ -96,15 +96,41 @@ def format_output_data(abstract: str, pred_probabilities):
     
     # formuojam tuščią python sąrašą
     formated_output_data = []
-    
-    # užpildom rezultato sąrašą
-    for i, sentence in enumerate(sentences):
-        formated_output_data.append({
-            "line_number": i,
-            "class": get_classname(predictions[i]),
-            "text": sentence,
-        })
+
+    if group:
+        background = []
+        objective = []
+        methods = []
+        results = []
+        conclusions = []
+        
+        for i, sentence in enumerate(sentences):
+            if get_classname(predictions[i]) == "BACKGROUND":
+                background.append(sentence)
+            if get_classname(predictions[i]) == "OBJECTIVE":
+                objective.append(sentence)
+            if get_classname(predictions[i]) == "METHODS":
+                methods.append(sentence)
+            if get_classname(predictions[i]) == "RESULTS":
+                results.append(sentence)
+            if get_classname(predictions[i]) == "CONCLUSIONS":
+                conclusions.append(sentence)
+        
+        formated_output_data = [
+            {"class":"Background", "sentences": background},
+            {"class":"Objective", "sentences": objective},
+            {"class":"Methods", "sentences": methods},
+            {"class":"Results", "sentences": results},
+            {"class":"Conclusions", "sentences": conclusions},
+        ]
+
+    else:
+        # užpildom rezultato sąrašą
+        for i, sentence in enumerate(sentences):
+            formated_output_data.append({
+                "line_number": i,
+                "class": get_classname(predictions[i]),
+                "text": sentence,
+            })
 
     return formated_output_data
-
-
