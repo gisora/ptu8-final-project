@@ -38,3 +38,30 @@ def expand_sentence_chars(sentence: str):
     return expanded_sentence
 
 
+def format_input_data(abstract: str):
+    """
+    Grąžina TensorFlow modeliui paruoštą santraukos tekstą
+
+    Args:
+        abstract: santraukos tekstas
+    """
+    # sudarom santraukos sakinių sąrašą
+    sentences = get_sentences(abstract)
+    
+    # išskaidom kiekvieno sakinio simbolius
+    sentence_chars = [expand_sentence_chars(sentence) for sentence in sentences]
+
+    # sudarom sakinių eilės numerių sąrašą
+    line_numbers = [line_number for line_number in range(len(sentences))]
+    # koduojam sakinių eilės numerius su tf.one_hot
+    line_numebers_onehot = tf.one_hot(line_numbers, depth=line_numbers_depth)
+
+    # sudarom santraukos sakinių skaičiaus sąrašą (kiekvienam sakiniui tas pats)
+    sentences_total = [len(sentences) for _ in range(len(sentences))]
+    # koduojam santraukos sakinių skaičių su tf.one_hot
+    sentences_total_onehot = tf.one_hot(sentences_total, depth=sentences_total_depth)
+
+    # paruošiam įvedimą tensorflow modeliui
+    formated_input_data = (line_numebers_onehot, sentences_total_onehot, tf.constant(sentences), tf.constant(sentence_chars))
+
+    return formated_input_data
