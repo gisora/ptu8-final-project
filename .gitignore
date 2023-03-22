@@ -132,4 +132,3 @@ dmypy.json
 pubmed-rct/
 tensorboard/
 checkpoints/
-models/
