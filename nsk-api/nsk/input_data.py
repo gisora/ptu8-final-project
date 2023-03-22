@@ -69,12 +69,41 @@ def format_input_data(abstract: str):
 
 def get_classname(classname_idx: int):
     """
-    Grąžina sakinio etikėtės pavadinimą
+    Grąžina sakinio etiketės pavadinimą
 
     Args:
-        classname_idx: etikėtes indeksas etikėčių sąraše
+        classname_idx: etiketes indeksas etikėčių sąraše
     """
-    # etikėčių pavadinimų sąrašas buvo sudarytas moelio kūrimo metu su scikit-learn LabelEncoder
+    # etikečių pavadinimų sąrašas buvo sudarytas modelio kūrimo metu su scikit-learn LabelEncoder
     classnames = ["BACKGROUND", "CONCLUSIONS", "METHODS", "OBJECTIVE", "RESULTS"]
     
     return classnames[classname_idx]
+
+
+def format_output_data(abstract: str, pred_probabilities):
+    """
+    Grąžina python žodynų su santraukos sakiniu ir modelio priskirta etikete sąrašą
+
+    Args:
+        abstarct: santraukos tekstas
+        pred_probabilities: modelio sakinio etiketės spejimų tikimybės kiekvienam santraukos sakiniui
+    """
+    # sudarom santraukos sakinių sąrašą
+    sentences = get_sentences(abstract)
+    
+    # randam didžiausios tikimybės indeksą
+    predictions = tf.argmax(pred_probabilities)
+
+    # formuojam tuščią python sąrašą
+    formated_output_data = []
+    
+    # užpildom rezultato sąrašą
+    for i, sentence in enumerate(sentences):
+        formated_output_data += {
+            "class": get_classname(predictions[i]),
+            "text": sentence,
+        }
+
+    return formated_output_data
+
+
