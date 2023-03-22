@@ -25,3 +25,16 @@ def get_sentences(text: str):
     sentences_list = tokenizer.tokenize(text)
 
     return sentences_list
+
+
+def expand_sentence_chars(sentence: str):
+    """
+    Grąžina sakinį su išskaidytais simboliais
+
+    Args:
+        sentence: sakinio tekstas
+    """
+    expanded_sentence = " ".join(list(sentence))
+    return expanded_sentence
+
+
