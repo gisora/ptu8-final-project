@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', path='css/pico.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='css/custom.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', path='images/favicon.ico') }}" type="image/x-icon">
+    <title>NSK - PTU8 Final Project</title>
+</head>
+
+<body>
+    <header id="top-header">
+        <hgroup>
+            <h1>NSK</h1>
+            <h2>PTU8 Final Project</h2>
+        </hgroup>
+    </header>
+    <main>
+        <div class="grid">
+            <article>
+                <header>
+                    <h2>Abstract input</h2>
+                </header>
+                <form id="abstract_input" method="post" action="/">
+                    <textarea name="abstract" rows="15">{{ abstract }}</textarea>
+                </form>
+                <footer>
+                    <button type="submit"
+                        onclick="document.getElementById('abstract_input').submit();">Classify</button>
+                </footer>
+            </article>
+            <article>
+                <header>
+                    <h2>Clasification output</h2>
+                </header>
+                {% if results|length > 0 -%}
+                    {% for result in results %}
+                        {% if result.sentences|length > 0 -%}
+                            <details open>
+                                <summary><b>{{ result.class }}</b></summary>
+                                {% for sentence in result.sentences %}
+                                    <p>{{ sentence }}</p>
+                                {% endfor %}
+                            </details>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                <b>Enter abstract sentences and press "Classify" button.</b>
+                {% endif %}
+            </article>
+        </div>
+    </main>
+    <footer class="container">
+        &copy; 2023, NSK - PTU8 Final Project
+    </footer>
+</body>
+
+</html>
