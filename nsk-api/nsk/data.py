@@ -92,17 +92,18 @@ def format_output_data(abstract: str, pred_probabilities):
     sentences = get_sentences(abstract)
     
     # randam didžiausios tikimybės indeksą
-    predictions = tf.argmax(pred_probabilities)
-
+    predictions = tf.argmax(pred_probabilities, axis=1).numpy().tolist()
+    
     # formuojam tuščią python sąrašą
     formated_output_data = []
     
     # užpildom rezultato sąrašą
     for i, sentence in enumerate(sentences):
-        formated_output_data += {
+        formated_output_data.append({
+            "line_number": i,
             "class": get_classname(predictions[i]),
             "text": sentence,
-        }
+        })
 
     return formated_output_data
 
