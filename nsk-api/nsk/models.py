@@ -21,13 +21,16 @@ def get_model(model_name="nsk_model_v1"):
     return model
 
 
-def get_result(abstract: str, model):
+def get_result(abstract: str, model, group=False):
     """
     Grąžina suklasifikuotų santraukos sakinių python žodynų sąrašą
 
     Args:
         abstract: santraukos tekstas
         model: TesorFlow modelis
+        group:
+            False - grąžina etiketę prie kiekvieno sakinio
+            True - grąžina sakinius sugrupuotus pagal etiketes
     """
     # formuojam įvedimo duomenys
     inputs = format_input_data(abstract)
@@ -36,6 +39,6 @@ def get_result(abstract: str, model):
     pred_probs = model.predict(x=inputs)
 
     # formuojam rezultatus
-    outputs = format_output_data(abstract, pred_probs)
+    outputs = format_output_data(abstract, pred_probs, group)
 
     return outputs
