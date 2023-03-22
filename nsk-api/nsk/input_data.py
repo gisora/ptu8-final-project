@@ -65,3 +65,16 @@ def format_input_data(abstract: str):
     formated_input_data = (line_numebers_onehot, sentences_total_onehot, tf.constant(sentences), tf.constant(sentence_chars))
 
     return formated_input_data
+
+
+def get_classname(classname_idx: int):
+    """
+    Grąžina sakinio etikėtės pavadinimą
+
+    Args:
+        classname_idx: etikėtes indeksas etikėčių sąraše
+    """
+    # etikėčių pavadinimų sąrašas buvo sudarytas moelio kūrimo metu su scikit-learn LabelEncoder
+    classnames = ["BACKGROUND", "CONCLUSIONS", "METHODS", "OBJECTIVE", "RESULTS"]
+    
+    return classnames[classname_idx]
