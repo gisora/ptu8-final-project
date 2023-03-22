@@ -1,27 +1,39 @@
 import tensorflow as tf
 from nsk.models import get_model, get_result
-from fastapi import FastAPI, Request, Body
-# from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request, Body, Form
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 MODEL = get_model()
 app = FastAPI()
-# app.mount("/static", StaticFiles(directory="static"), name="static")
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def get_index(request: Request):
-    info = {
-        "name":"NSK API",
-        "model":"nsk_model_v1",
-        "description": "Nuoseklių sakinių klasifikavimas",
-        "endpoint": "/api/predict",
-        "content-type": "application/json",
-        "body": "{'abstract':'abstarct sentences without new lines'}",
+    context = {
+        "request": request,
+        "abstract": "",
+        "results": "",
     }
     
-    return info
+    return templates.TemplateResponse("index.html", context)
 
 
+@app.post("/", response_class=HTMLResponse)
+async def get_html_predictions(request: Request, abstract: str=Form()):
+    results = get_result(abstract, MODEL, group=True)
+    
+    context = {
+       "request": request,
+       "abstract": abstract,
+       "results": results,
+    }
+    
+    return templates.TemplateResponse("index.html", context) 
+    
 @app.post("/api/predict")
 async def get_predictions(request: Request, body=Body(...)):
     abstract = body['abstract']
