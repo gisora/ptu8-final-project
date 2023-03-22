@@ -7,8 +7,8 @@ import nltk.data
 nltk.download('punkt')
 
 # modelio kūrimo metu gauti parametrai naudojami koduojant sakinio eilės numerį ir santraukos sakinių skaičių
-line_numbers_depth = 17     # didžiausias su tf.one_hot koduojamas sakinio eilės numeris
-sentences_total_depth = 22  # didžiausias su tf.one_hot koduojamas visų sakinių skaičius
+LINE_NUMBERS_DEPTH = 17     # didžiausias su tf.one_hot koduojamas sakinio eilės numeris
+SENTENCES_TOTAL_DEPTH = 22  # didžiausias su tf.one_hot koduojamas visų sakinių skaičius
 
 
 def get_sentences(text: str):
@@ -54,12 +54,12 @@ def format_input_data(abstract: str):
     # sudarom sakinių eilės numerių sąrašą
     line_numbers = [line_number for line_number in range(len(sentences))]
     # koduojam sakinių eilės numerius su tf.one_hot
-    line_numebers_onehot = tf.one_hot(line_numbers, depth=line_numbers_depth)
+    line_numebers_onehot = tf.one_hot(line_numbers, depth=LINE_NUMBERS_DEPTH)
 
     # sudarom santraukos sakinių skaičiaus sąrašą (kiekvienam sakiniui tas pats)
     sentences_total = [len(sentences) for _ in range(len(sentences))]
     # koduojam santraukos sakinių skaičių su tf.one_hot
-    sentences_total_onehot = tf.one_hot(sentences_total, depth=sentences_total_depth)
+    sentences_total_onehot = tf.one_hot(sentences_total, depth=SENTENCES_TOTAL_DEPTH)
 
     # paruošiam įvedimą tensorflow modeliui
     formated_input_data = (line_numebers_onehot, sentences_total_onehot, tf.constant(sentences), tf.constant(sentence_chars))
