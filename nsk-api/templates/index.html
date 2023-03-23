@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -13,49 +13,138 @@
 
 <body>
     <header id="top-header">
-        <hgroup>
-            <h1>NSK</h1>
-            <h2>PTU8 Final Project</h2>
-        </hgroup>
+        <nav>
+            <ul>
+                <li>
+                    <hgroup><img id="logo-img" src="{{ url_for('static', path='images/logo.png') }}"></hgroup>
+                </li>
+                <li>
+                    <hgroup>
+                        <h1>NSK</h1>
+                        <h2>PTU8 Final Project</h2>
+                    </hgroup>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <button id="help-modal-button" class="outline" data-target="modal-help"
+                        onClick="toggleModal(event)">Help</button>
+                </li>
+                <li>
+                    <button id="about-modal-button" class="outline" data-target="modal-about"
+                        onClick="toggleModal(event)">About</button>
+                </li>
+            </ul>
+        </nav>
     </header>
-    <main>
+    <main id="main-container">
         <div class="grid">
             <article>
                 <header>
-                    <h2>Abstract input</h2>
+                    <h3>&#x1F4C4; Abstract input</h3>
                 </header>
                 <form id="abstract_input" method="post" action="/">
-                    <textarea name="abstract" rows="15">{{ abstract }}</textarea>
+                    <textarea id="abstract" name="abstract" rows="15" required>{{ abstract }}</textarea>
                 </form>
-                <footer>
-                    <button type="submit"
-                        onclick="document.getElementById('abstract_input').submit();">Classify</button>
-                </footer>
+                <div>
+                    <button type="submit" onclick="submit_abstract_form()">&#x1F4DD; Classify</button>
+                </div>
             </article>
             <article>
-                <header>
-                    <h2>Clasification output</h2>
+                <header class="article-header">
+                    <h3>&#x1F516; Clasification output</h3>
                 </header>
                 {% if results|length > 0 -%}
-                    {% for result in results %}
-                        {% if result.sentences|length > 0 -%}
-                            <details open>
-                                <summary><b>{{ result.class }}</b></summary>
-                                {% for sentence in result.sentences %}
-                                    <p>{{ sentence }}</p>
-                                {% endfor %}
-                            </details>
-                        {% endif %}
+                {% for result in results %}
+                {% if result.sentences|length > 0 -%}
+                <details open>
+                    <summary>
+                        <h4 style="color: #f4511e;">{{ result.class }}</h4>
+                    </summary>
+                    {% for sentence in result.sentences %}
+                    <p>{{ sentence }}</p>
                     {% endfor %}
+                </details>
+                {% endif %}
+                {% endfor %}
                 {% else %}
-                <b>Enter abstract sentences and press "Classify" button.</b>
+                <center><b>Enter sentences of RCT abstract and press [ &#x1F4DD; Classify ] button.</b></center>
                 {% endif %}
             </article>
         </div>
     </main>
-    <footer class="container">
+    <footer id="main-footer" class="container">
         &copy; 2023, NSK - PTU8 Final Project
     </footer>
+    <dialog id="modal-help">
+        <article>
+            <a href="#close" aria-label="Close" class="close" data-target="modal-help" onClick="toggleModal(event)"></a>
+            <h3>Help</h3>
+            <hr>
+            <h4>APP:</h4>
+            <ol>
+                <li>Enter the abstract sentences in the text box under <b>"Abstract input"</b> and press <b>[ &#x1F4DD;
+                        Classify ]</b> button below.</li>
+                <li>Results will be presented in the output section under <b>"Clasification output"</b>. Sentences will
+                    be separated in to groups.</li>
+            </ol>
+            <hr>
+            <h4>API:</h4>
+            <ul>
+                <li>URL: <b>/api/predict</b></li>
+                <li>Method: <b>POST</b></li>
+                <li>Content type: <b>application/json</b></li>
+                <li>Request body: <b>{"abstract": "abstract sentences without new lines"}</b></li>
+            </ul>
+
+            <p><b>Curl example:</b></p>
+            <kbd>
+                curl -X 'POST' \<br> 'http://hostname/api/predict' \<br>
+                -H 'accept: application/json' \<br>
+                -H 'Content-Type: application/json' \<br>
+                -d '{"abstract":"First sentence. Second sentence."}'
+            </kbd>
+
+
+            <footer>
+                <a href="#cancel" role="button" class="secondary" data-target="modal-help" onClick="toggleModal(event)">
+                    Close
+                </a>
+            </footer>
+        </article>
+    </dialog>
+
+    <dialog id="modal-about">
+        <article>
+            <a href="#close" aria-label="Close" class="close" data-target="modal-about"
+                onClick="toggleModal(event)"></a>
+            <h3>About</h3>
+            <p>This project performs a <b>classification of random clinical trial report abstracts</b> by classifying
+                the
+                abstract sentences into six groups: background, objectives, methods, results and conclusions.</p>
+
+            <p>The artificial neural network is based on the model presented in the paper <a
+                    href="https://arxiv.org/pdf/1612.05251.pdf">Neural Networks for Joint Sentence
+                    Classificationin Medical Paper Abstracts</a> and trained on the <a
+                    href="https://arxiv.org/pdf/1710.06071.pdf">PubMed 200k RCT</a> dataset.</p>
+
+            <p>The model was created using <a href="https://www.tensorflow.org/">Google TensorFlow</a> - a free and
+                open-source software library for machine
+                learning and artificial intelligence.</p>
+            <footer>
+                <a href="#cancel" role="button" class="secondary" data-target="modal-about"
+                    onClick="toggleModal(event)">
+                    Close
+                </a>
+            </footer>
+        </article>
+    </dialog>
+    <div id="alert_box" class="alert alert-error" style="display: none;">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <b>Error: Abstract must contain atleast one sentence.</b>
+    </div>
+    <script src="{{ url_for('static', path='js/form_submit.js') }}"></script>
+    <script src="{{ url_for('static', path='js/modal.js') }}"></script>
 </body>
 
 </html>
