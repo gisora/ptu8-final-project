@@ -1,6 +1,5 @@
 body {
-    padding: 2rem;
-    /* background-image: url("/static/blog/img/header_bg.png"); */
+    background-image: url("/static/images/bg.png");
     background-size: 100%;
     background-attachment: fixed;
 }
@@ -9,13 +8,82 @@ body {
     background-color: #11191fea;
     position: fixed;
     top: 0;
-    padding-top: 20px;
+    padding-top: 1rem;
     padding-bottom: 0px;
-    margin-bottom: 80px;
+    padding-right: 2rem;
+    padding-left: 2rem;
+
     width: 100%;
     z-index: 3;
 }
 
-footer {
+#main-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+#main-footer {
     text-align: center;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+article > header {
+    padding-bottom: 20px;
+}
+
+li > hgroup {
+    margin-bottom: 0;
+}
+
+div.alert {
+    position: absolute; /*TODO pakeisti i fixed*/
+    top: 10px;
+    left: 25%;    
+    min-width: 50%;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+    z-index: 4;
+}
+
+div.alert.alert-success {background-color: #04AA6D;}
+div.alert.alert-info {background-color: #2196F3;}
+div.alert.alert-warning {background-color: #ff9800;}
+div.alert.alert-error {background-color: #f44336;}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+  
+.closebtn:hover {
+    color: black;
+}
+
+#about-modal-button {
+    border: none;
+    background-color: transparent;
+    font-size: 1.25rem;
+}
+
+#about-modal-button:active, :focus {
+    box-shadow: none;
+}
+
+#help-modal-button {
+    border: none;
+    background-color: transparent;
+    font-size: 1.25rem;
+}
+
+#help-modal-button:active, :focus {
+    box-shadow: none;
 }
