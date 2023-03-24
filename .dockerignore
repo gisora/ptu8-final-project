@@ -15,3 +15,4 @@ docker-compose.yml
 **/.pyo
 **/.pyd
 **/__pycache__
+**/test_nsk_api.py
