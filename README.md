@@ -3,7 +3,7 @@
 ### Sequential sentence classification in medical abstracts of randomized controlled trials
 ---
 **Repozitorijos turinys**:
-- *NSK_experiments.ipynb* - ekperimentai su modeliais
+- *NSK_experiments.ipynb* - eksperimentai su modeliais
 - *NSK_model.ipynb* - geriausias eksperimentų modelis ir jo apmokymas
 - *nsk-api* - santraukų klasifikavimo api
 ---
